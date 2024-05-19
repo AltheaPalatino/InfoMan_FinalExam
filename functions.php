@@ -1,9 +1,11 @@
 <?php  
-function addUser($conn, $username, $password) {
+function addUser($conn, $username, $password) 
+	// Check if the username already exists
 	$sql = "SELECT * FROM users WHERE username=?";
 	$stmt = $conn->prepare($sql);
 	$stmt->execute([$username]);
 
+        // If username does not exist, proceed to insert into the database
 	if($stmt->rowCount()==0) {
 		$sql = "INSERT INTO users (username,password) VALUES (?,?)";
 		$stmt = $conn->prepare($sql);
@@ -12,10 +14,12 @@ function addUser($conn, $username, $password) {
 }
 
 function login($conn, $username, $password) {
+	// Check if the username exists in the database
 	$query = "SELECT * FROM users WHERE username=?";
 	$stmt = $conn->prepare($query);
 	$stmt->execute([$username]);
 
+	// If username exists
 	if($stmt->rowCount() == 1) {
 		// returns associative array
 		$row = $stmt->fetch();
